@@ -49,6 +49,7 @@ def REDP(d_list,d_t_list):
         df.replace('',0,inplace=True)
     
     #データ型をfloat64で統一する
+    #astypeの使用上、for文に組み込めなかった
     df_l = df_l.astype('float64')
     df_t = df_t.astype('float64')
     
