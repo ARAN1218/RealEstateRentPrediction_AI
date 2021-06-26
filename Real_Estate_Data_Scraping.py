@@ -6,10 +6,10 @@ import json
 import pandas as pd
 
 
-#スクレイピングに必要なパラメータを入力
+#スクレイピングに必要なパラメータを入力する
 start = 1  #初めのページ数
 end = 20  #終わりのページ数
-place = '相模原'  #(辞書urlsに入っている内の)読み込む地域
+place = '渋谷'  #(辞書urlsに入っている内の)読み込む地域
 
 #後でformatでページ数を代入するので、urlの内「pn=」の部分は「pn={}」としておく
 urls = {
@@ -26,8 +26,7 @@ def REDS(start,end,place):
     d_list = []
     url = urls[place]
     
-    #目的のページ数までの奇数ページのデータを取得する。
-    #range(start,end+1,2)の内、2の部分を消せば指定した全ページのデータが取得できる。
+    #range(start,end+1,2)の内、2の部分を消せば指定した全ページのデータが取得できる
     for i in range(start,end+1,2):
     
         #ページを遷移させる
@@ -42,19 +41,19 @@ def REDS(start,end,place):
         #取得したHTMLをBeautifulSoupで解析する
         soup = BeautifulSoup(r.text)
         
-        #BeautifulSoupで解析したHTMLの内、欲しい不動産情報が乗っている部分を取得
+        #BeautifulSoupで解析したHTMLの内、欲しい不動産情報が乗っている部分を取得する
         contents = soup.find_all('div',class_='cassettebox js-normalLink js-cassetLink')
         
-        #1ページ当たり30件の不動産データが表示されていれば、リストcontentsは30個の要素を持つはずなので、それらを一つずつ取り出してデータを取得する。
+        #1ページ当たり30件の不動産データが表示されていれば、リストcontentsは30個の要素を持つはずなので、それらを一つずつ取り出してデータを取得する
         for content in contents:
             
-            #上の行のデータを取得
+            #上の行のデータを取得する
             rows = content.find_all('table',class_='listtable')
             address = rows[0].find_all('div',class_='infodatabox-box-txt')[0].text
             station = rows[0].find_all('div',class_='infodatabox-box-txt')[1].text
             access = rows[0].find_all('div',class_='infodatabox-box-txt')[2].text
 
-            #下の行のデータを取得
+            #下の行のデータを取得する
             r_fees = rows[1].find_all('dd',class_='infodatabox-details-txt')[0].text[:-2]
             mc_fees = rows[1].find_all('dd',class_='infodatabox-details-txt')[1].text[:-1]
             k_fees = rows[1].find_all('dd',class_='infodatabox-details-txt')[2].text.split('/')[0]
@@ -87,16 +86,20 @@ def REDS(start,end,place):
         print("d_list's progress:",i,"page　　",len(d_list))
         print(target_url)
     
-    #スクレイピングが終わった事を通知
+    #スクレイピングが終わった事を通知する
     print('Scraping Completed!')
     return d_list
 
 
-#REDS(最初のページ数, 最後のページ数, 地域)
+#学習データとして、目的のページ数までの奇数ページのデータを取得する。
+#テストデータとして、目的のページ数までの偶数ページのデータを取得する。
 #返り値でリストが来るため、リストとして変数に代入させる。
+#REDS(最初のページ数, 最後のページ数, 地域)
 d_list = REDS(start,end,place)
-
+d_t_list = REDS(start+1,end+1,place)
 
 #スクレイピングした不動産データをデータフレームに変換し、上位10件を表示させる。
 df = pd.DataFrame(d_list)
-df.head(10)
+df_test = pd.DataFrame(d_t_list)
+display(df.head(10))
+display(df_test.head(10))
