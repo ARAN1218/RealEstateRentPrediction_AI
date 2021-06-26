@@ -14,7 +14,7 @@ from sklearn.preprocessing import LabelEncoder
 print(adressC,'\n','\n',stationC,'\n','\n',layoutC)
 
 
-#(学習した範囲内の)任意のデータを入力して予測できる関数
+#(学習した範囲内の)任意のデータを入力して賃料を予測できる関数
 #Real_Estate_Own_Data_Prediction
 def REODP(address,station,access,mc_fees,k_fees,s_fees,area,layout,age):
     #入力したデータを辞書d_tryに格納する
