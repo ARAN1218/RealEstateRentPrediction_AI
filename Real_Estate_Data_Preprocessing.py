@@ -7,17 +7,18 @@ pd.set_option('display.max_rows',None)
 
 
 #既にREDSを用いて変数d_listとd_t_listにスクレイピングしたデータが保存され、それぞれdf,df_testにデータフレーム型に変換されて代入されているとする
-#d_t_listには偶数ページの不動産データが重複なしで格納されている
 #d_list = REDS(start,end,place)
-#df = pd.DataFrame(d_list)
 #d_t_list = REDS(start+1,end+1,place)
-#df_test = pd.DataFrame(d_t_list)
+
+
+#オリジナル予測の為にラベルエンコーダーを関数の外で用意する
+LE1,LE2,LE3 = LabelEncoder(),LabelEncoder(),LabelEncoder()
 
 
 #学習データ/テストデータを同時に前処理する関数
 #Real_Estate_Data_Preprocessing
 def REDP(d_list,d_t_list):
-    #データフレームに変換
+    #データフレームに変換する
     df_l = pd.DataFrame(d_list)
     df_t = pd.DataFrame(d_t_list)
     
@@ -31,9 +32,8 @@ def REDP(d_list,d_t_list):
                                                                    ,'年':'','新':'','万':'','(':'','円':''}))
     
     
-    #ラベルエンコードを行い、列毎に変換の数字を合わせる
+    #ラベルエンコーダーの学習を行い、列毎に変換の数字を合わせる
     #注意:余計な文字を取り除いた段階でテストデータも一緒にラベルエンコードしないと、テストデータにのみ存在する住所等を変換できなくなってしまう為、学習データと縦に連結してfitさせる
-    LE1,LE2,LE3 = LabelEncoder(),LabelEncoder(),LabelEncoder()
     LE_df = pd.concat([df_l,df_t])
     LE1.fit(LE_df['住所'])
     LE2.fit(LE_df['路線'])
@@ -61,3 +61,8 @@ df_l,df_t = REDP(d_list,d_t_list)
 #確認用
 display(df_l.head(10))
 display(df_t.head(10))
+
+
+#オリジナル予測の為にラベルエンコーダーの学習した要素を変数に格納しておく
+adressC,stationC,layoutC = LE1.classes_,LE2.classes_,LE3.classes_
+print(adressC,'\n','\n',stationC,'\n','\n',layoutC)
