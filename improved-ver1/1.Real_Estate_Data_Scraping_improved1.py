@@ -9,8 +9,8 @@ from tqdm import tqdm_notebook as tqdm
 
 #スクレイピングに必要なパラメータを入力
 start = 1  #初めのページ数
-end = 2287  #終わりのページ数(SUUMOのサイトを見て、何ページまでデータがあるかを確認する)
-place = '新宿'  #(辞書urlsに入っている内の)読み込む地域
+end = 1000  #終わりのページ数(SUUMOのサイトを見て、何ページまでデータがあるかを確認する)
+place = '相模原'  #(辞書urlsに入っている内の)読み込む地域
 
 #後でformatでページ数を代入するので、urlの内「pn=」の部分は「pn={}」としておく
 urls = {
@@ -127,3 +127,8 @@ reds_pre_results = []
 reds_test = REDS(start,end,place,reds_pre_results)
 reds_pre_results = reds_test
 reds_pre_results
+
+
+#取得したデータはpickleデータとして保存しておく。
+reds_df = pd.DataFrame(reds_test)
+reds_df.to_pickle('SUUMO_Sagamihara_Bigdata.pickle')
