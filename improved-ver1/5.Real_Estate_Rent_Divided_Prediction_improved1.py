@@ -36,10 +36,9 @@ def RERDP(df_t):
     df_final = pd.concat([df_fact,df_pred],axis=1)
     display(df_final)
     
-    print(np.array(df_pred))
+    #MAPEとSMAPEの計算のため、df_factとdf_predをndarrayに変換する(MAE等の計算に影響しない)
     df_fact = df_fact.to_numpy()
     df_pred = df_pred.to_numpy()
-    #print(df_pred)
     
     #モデルの性能を表示
     print('MAE:',mean_absolute_error(df_fact,df_pred)) #予測値と実測値の平均的なズレ（誤差）の大きさ
