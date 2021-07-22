@@ -55,9 +55,9 @@ def RERL(df_l,best_params):
     display(pd.concat([df_true,df_pred],axis=1))
     
     #モデルの性能を表示
-    print('MAE:',mean_absolute_error(va_y,va_pred))
-    print('MSE:',mean_squared_error(va_y,va_pred))
-    print('RMSE:',np.sqrt(mean_squared_error(va_y,va_pred)))
+    print('MAE:',mean_absolute_error(va_y,va_pred)) #予測値と実測値の平均的なズレ（誤差）の大きさ
+    print('MSE:',mean_squared_error(va_y,va_pred)) #予測値と実測値のズレの大きさ(大きな誤差を重視)
+    print('RMSE:',np.sqrt(mean_squared_error(va_y,va_pred))) #MSEの平方根
     
     #変数の予測への寄与率をグラフにして表示
     shap.initjs()
@@ -65,7 +65,7 @@ def RERL(df_l,best_params):
     shap_values = explainer.shap_values(X = tr_x)
     shap.summary_plot(shap_values, tr_x)
     shap.summary_plot(shap_values, tr_x, plot_type = "bar")
-    #上のグラフは、横軸がその変数の大きさ、色が目的変数への影響(赤い程目的変数を大きくする)を表す
+    #上のグラフは、横軸がその変数自体の大きさ、色が目的変数への影響の違い(赤い程目的変数を大きくする)を表す
     
     return model
 
