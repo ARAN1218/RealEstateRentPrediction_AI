@@ -65,6 +65,7 @@ def RERL(df_l,best_params):
     shap_values = explainer.shap_values(X = tr_x)
     shap.summary_plot(shap_values, tr_x)
     shap.summary_plot(shap_values, tr_x, plot_type = "bar")
+    #上のグラフは、横軸がその変数の大きさ、色が目的変数への影響(赤い程目的変数を大きくする)を表す
     
     return model
 
