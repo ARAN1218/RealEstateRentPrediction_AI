@@ -14,11 +14,11 @@ import xgboost as xgb
 #不動産賃料予測AIモデルの学習プログラム
 #Real_Estate_Rent_Learning
 def RERL(df):
-    #学習データと教師データに分ける
+    #データを説明変数と目的変数に分ける
     target = df['賃料']
     train = df.drop(['賃料'],axis=1)
     
-    #クロスバリデーション
+    #ホールドアウト法で学習データとテストデータに分ける
     kf = KFold(n_splits=4,shuffle=True,random_state=71)
     tr_idx,va_idx = list(kf.split(train))[0]
     tr_x,va_x = train.iloc[tr_idx],train.iloc[va_idx]
