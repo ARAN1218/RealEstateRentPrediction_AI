@@ -16,14 +16,14 @@ warnings.simplefilter('ignore')
 pd.set_option('display.max_rows',None)
 
 
-#既に学習データとREDP関数を用いてAIが作成されているものとする
+#既に学習データとREDP関数を用いてAIモデルが作成されているものとする
 #model = RERL(df_l)
 
 
 #RERLで作ったAIを用いて、テストデータの不動産の賃料を予測する関数
 #Real_Estate_Rent_Divided_Prediction
 def RERDP(df_t):
-    #学習データと教師データの分割
+    #説明変数と目的変数を分割
     df_fact = df_t['賃料']
     df_input = df_t.drop(['賃料'],axis=1)
     
