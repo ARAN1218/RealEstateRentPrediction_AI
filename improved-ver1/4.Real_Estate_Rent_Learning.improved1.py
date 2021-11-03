@@ -27,11 +27,11 @@ pd.set_option('display.max_rows',None)
 #HPT_XGBで取得したパラメータを利用する
 #Real_Estate_Rent_Learning
 def RERL(df_l,best_params):
-    #学習データと教師データに分ける
+    #データを説明変数と目的変数に分ける
     target = df_l['賃料']
     train = df_l.drop(['賃料'],axis=1)
     
-    #クロスバリデーション
+    #ホールドアウト法で学習データとテストデータに分ける
     kf = KFold(n_splits=4,shuffle=True,random_state=71)
     tr_idx,va_idx = list(kf.split(train))[0]
     tr_x,va_x = train.iloc[tr_idx],train.iloc[va_idx]
@@ -46,7 +46,6 @@ def RERL(df_l,best_params):
     early_stopping_rounds=20
     watchlist = [(dtrain,'train'),(dvalid,'eval')]
     model = xgb.train(best_params,dtrain,num_round,early_stopping_rounds=early_stopping_rounds,evals=watchlist)
-    
     
     #テストデータとその予測結果を表示
     va_pred = model.predict(dvalid)
