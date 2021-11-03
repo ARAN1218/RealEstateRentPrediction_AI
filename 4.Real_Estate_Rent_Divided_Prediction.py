@@ -16,7 +16,7 @@ pd.set_option('display.max_rows',None)
 #RERLで作ったAIを用いて、テストデータの不動産の賃料を予測する関数
 #Real_Estate_Rent_Divided_Prediction
 def RERDP(df):
-    #学習データと教師データの分割する
+    #説明変数と目的変数を分割する
     df_fact = df['賃料']
     df_input = df.drop(['賃料'],axis=1)
     
